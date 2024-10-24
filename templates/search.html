@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск нейросетей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Поиск нейросетей</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="GET">
+            <label for="category">Фильтр по категории:</label>
+            <select id="category" name="category" onchange="this.form.submit()">
+                <option value="">Все категории</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if category == selected_category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        {% if ais %}
+            <ul class="ai-list">
+                {% for ai in ais %}
+                    <li>
+                        <h3><a href="{{ ai.link }}" target="_blank">{{ ai.link }}</a></h3>
+                        <p>{{ ai.description }}</p>
+                        <p><strong>Категория:</strong> {{ ai.category }}</p>
+                        <a href="{{ url_for('delete', link=ai.link) }}" class="button delete-button" onclick="return confirm('Вы уверены, что хотите удалить эту нейросеть?');">Удалить</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Нейросети не найдены.</p>
+        {% endif %}
+        <a href="{{ url_for('index') }}" class="button">Назад</a>
+    </div>
+</body>
+</html>

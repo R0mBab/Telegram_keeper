@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить нейросеть</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Добавить нейросеть</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="POST">
+            <label for="link">Ссылка:</label>
+            <input type="text" id="link" name="link" required>
+
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="category">Категория:</label>
+            <select id="category" name="category" required>
+                {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="button">Добавить</button>
+        </form>
+        <a href="{{ url_for('index') }}" class="button">Назад</a>
+    </div>
+</body>
+</html>s
